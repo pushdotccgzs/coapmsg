@@ -73,6 +73,9 @@ func BytesToMessage(data []byte) (Message, error) {
 
 	msg.MessageID = binary.BigEndian.Uint16(data[DataMsgIDStart:DataMsgIDEnd])
 
+	if tokenLength > 0 && len(data) < int(DataTokenStart+tokenLength) {
+		return nil, ErrInvalidTokenLength
+	}
 	// Token
 	if tokenLength > 0 {
 		msg.Token = make([]byte, tokenLength)
